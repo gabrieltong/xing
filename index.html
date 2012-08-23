@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Twitter Bootstrap</title>
+	<script src="javascript/jquery.js"></script>
+	<script src="javascript/underscore-min.js"></script>				
+	<script src="javascript/backbone-min.js"></script>			
+	<script src="bootstrap/js/bootstrap.js"></script>
+	<script src="javascript/app.js"></script>	
+	<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="css/app.css" rel="stylesheet">
+</head>
+
+<body>
+	<div class="container app">
+		<div class="span4 left  ">
+			<div class="logo"><img src='./images/logo.png'/></div>
+			<div class="choice">
+				<form class='form-horizontal'>
+					<div class="control-group building buildings">
+						<label class="control-label label-large" for="optionsCheckbox">楼号：</label>
+						<div class="controls">
+							<div class="btn-group">
+								<a class="btn btn-inverse  dropdown-toggle span1 result" data-toggle="dropdown" href="#"></a>
+								<a class="btn btn-inverse  dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"> </span></a>
+								<ul class="dropdown-menu"></ul>
+							</div>
+						</div>
+					</div>
+					<div class="control-group building floors">
+						<label class="control-label">楼层：</label>
+						<div class="controls">
+							<div class="btn-group">
+								<a class="btn btn-inverse  dropdown-toggle span1 result" data-toggle="dropdown" href="#"></a>
+								<a class="btn btn-inverse  dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+								<table class="dropdown-menu "></table>
+							</div>
+						</div>
+					</div>
+					<div class="control-group building rooms">
+						<label class="control-label">房号：</label>
+						<div class="controls">
+							<div class="btn-group">
+								<a class="btn btn-inverse  dropdown-toggle span1 result" data-toggle="dropdown" href="#"></a>
+								<a class="btn btn-inverse  dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+								<ul class="dropdown-menu "></ul>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class='buttons'>
+				<button class="btn btn-small btn-100 action_math ">开始计算</button>
+				<br/><br/>		
+				<button class='btn btn-small btn-50 action_intro  '>项目介绍</button>
+				<button class='btn btn-small btn-50 action_design '>区域规划</button>					
+				<button class='btn btn-small btn-50 action_live   '>未来生活</button>
+				<button class='btn btn-small btn-50 action_space  ' >产品空间</button>
+				<button class='btn btn-small btn-50 action_service' >物业服务</button>
+				<button class='btn btn-small btn-50 action_sale   '>销控信息</button>																				
+				<button class='btn btn-small btn-100 action_client'><i class='icon-user'></i>我的客户</button>																								
+			</div>	
+		</div>
+		<div class="span8 right views row">
+			<img src="./images/landscape.png"/>
+		</div>
+		<div class="span8 right  hide">
+			<h1>基本信息</h1><br/>
+			<div class="span3">
+				<span>楼号：</span>
+				<span class="building_name"></span>
+			</div>
+			<div class="span2">
+				<span>房号：</span>
+				<span class='room_name'></span>
+			</div>
+			<div class="span3">
+				<span>户型：</span>
+				<span class='room_type'></span>
+			</div>
+			<div class="span2">
+				<span>面积：</span>
+				<span class="room_area"></span>
+			</div>
+			<br/><br/><br/><br/>
+			<div class="tabbable"> <!-- Only required for left/right tabs -->
+				<ul class="nav nav-tabs">
+					<li class="compute_times active"><a href="#tab3" data-toggle="tab">分期付款</a></li>
+					<li class="compute_all"><a href="#tab2" data-toggle="tab">一次性付款</a></li>
+					<li class="compute_credit "><a href="#tab1" data-toggle="tab">商业贷款</a></li>			
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane  compute_times active" id="tab3">
+						<form class="form-horizontal">
+							<div class="control-group">
+								<label class="control-label" for="appendedInput">单价：</label>
+								<div class="controls" style='text-align:left'>
+									<div class="input-append">
+										<input class="span2 danjia" type="text"><span class="add-on">元/m<sup>2</sup></span>
+									</div>
+								</div>
+							</div>
+						<br/><br/>
+							<div class="control-group">
+								<label class="control-label" for="appendedInput">期数：</label>
+								<div class="controls">
+									<div class="btn-group qishu">
+										<a href="#" value=2 class="btn btn-way">二期</a>
+										<a value=3 class="btn btn-way">三期</a>
+									</div>
+								</div>
+							</div>
+							</form>
+							<br/>
+							<br/>							
+							<button class='btn btn-large btn-warning compute'>开始计算</button>
+					</div>
+					<div class="tab-pane compute_all" id="tab2">
+						<form class='form-inline'>
+							<label class="control-label" for="appendedInput">单价：</label>
+							<div class="input-append">
+								<input class="span2 danjia" type="text"><span class="add-on">元/m<sup>2</sup></span>
+							</div>
+						</form>
+						<br/><br/>
+						<button class='btn btn-large btn-warning compute'>开始计算</button>
+					</div>
+
+					<div class="tab-pane compute_credit" id="tab1">
+						<br/>
+						<form class="form-horizontal">
+							<fieldset>
+								<div class="control-group">
+									<label class="control-label" for="appendedInput">单价：</label>
+									<div class="controls" style='text-align:left'>
+										<div class="input-append">
+											<input class="danjia" type="text"><span class="add-on">元/m<sup>2</sup></span>
+										</div>
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label" for="appendedInput">类型：</label>
+									<div class="controls">
+										<div class="btn-group leixing">
+											<a value=money class="btn btn-way">等额本金</a>
+											<a value=tax class="btn btn-way ">等额本息</a>
+										</div>
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label" for="appendedInput">按揭：</label>
+									<div class="controls">
+										<div class="btn-group anjie">
+											<a class="btn dropdown-toggle middle please" data-toggle="dropdown" href="#">请选择：</a>
+											<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+											<ul class="dropdown-menu middle">
+												<li><a href="#">按揭-1</a></li>
+												<li><a href="#">按揭-2</a></li>								
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label" for="appendedInput">年数：</label>
+									<div class="controls">
+										<div class="btn-group dropup nianshu">
+											<a class="btn dropdown-toggle middle please" data-toggle="dropdown" href="#">请选择：</a>
+											<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+											<ul class="dropdown-menu middle ">
+												<li><a value=5 href="#">5</a></li>
+												<li><a value=10 href="#">10</a></li>
+												<li><a value=20 href="#">20</a></li>
+												<li><a value=30 href="#">30</a></li>								
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label" for="appendedInput">利率：</label>
+									<div class="controls">
+										<div class="btn-group dropup lilv">
+											<a class="btn dropdown-toggle middle please" data-toggle="dropdown" href="#">请选择：</a>
+											<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+											<ul class="dropdown-menu middle lilv">
+												<li><a href="#">7.5折</a></li>
+												<li><a href="#">8.5折</a></li>
+												<li><a href="#">无折扣</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<br/>
+								<button class='btn btn-large btn-warning compute'>开始计算</button>
+							</fieldset>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>		
+		<div class="row left-right pay_details hide">
+			<h1>基本信息</h1>
+			<br/>
+			<div class="g_span">
+				<span>楼号：</span>
+				<span class="building_name"></span>
+			</div>
+			<div class="g_span">
+				<span>房号：</span>
+				<span class="room_name"></span>
+			</div>
+			<div class="g_span">
+				<span>面积：</span>
+				<span class="room_area"></span>
+			</div>
+			<div class="g_span">
+				<span>户型：</span>
+				<span class="room_type"></span>
+			</div>
+			<br/><br/><br/>
+			<h1>付款信息</h1>
+			<br/>
+			<div class="g_span">
+				<span>付款方式：</span>
+				<span class="compute_way"></span>
+			</div>
+			<div class="g_span">
+				<span>单价：</span>
+				<span class="danjia"></span>
+			</div>
+			<div class="g_span">
+				<span>总房款：</span>
+				<span class="total"></span>
+			</div>
+			<br/><br/><br/>
+			<h1 class='pay_h1'>详情</h1>
+			<br/>
+			<div class='row times'>
+				<div class="g_span ">
+					<span>分期次数：</span>
+					<span class="times_value"></span>
+				</div>
+				<br/><br/>
+				<div class="times_list">
+				</div>
+			</div>
+			<div class='row credit'>
+				<div class="g_span">
+					<span>贷款类型：</span>
+					<span class="leixing"></span>
+				</div>
+				<div class="g_span">
+					<span>贷款年数：</span>
+					<span class="nianshu"></span>
+				</div>
+				<div class="g_span">
+					<span>按揭：</span>
+					<span class="anjie"></span>
+				</div>
+				<br/><br/>
+				
+				<div class="g_span">
+					<span>首期付款：</span>
+					<span class="shoufu"></span>
+				</div>
+				<div class="g_span">
+					<span>月还款额：</span>
+					<span class="money_month"></span>
+				</div>
+			</div>
+			<div class='print_buttons'>
+				<button class='offset3 span2 btn btn-warning btn-large print'>打印</button>
+				<button class="span2 btn btn-large compute_again">重新计算</div>
+			</div>
+		</div>
+		<div class='footer'><span>华润置地 客户意向打印系统</span></div>
+		<div class="warning_panel modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none; ">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+				<h3 class='title'>提示</h3>
+			</div>
+			<div class="modal-body body">
+				
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-inverse btn-large " data-dismiss="modal">确认</button>
+			</div>
+		</div>
+		<div class="confirm_print modal hide fade row" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none; ">
+			<form class="form-horizontal">
+				<div class="control-group">
+					<label class="control-label" for="appendedInput">客户姓名：</label>
+					<div class="controls">
+						<div class="input-append">
+							<input class="middle danjia" type="text"/>
+						</div>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="appendedInput">置业顾问：</label>
+					<div class="controls">
+						<div class="btn-group guwen">
+							<a class="btn dropdown-toggle middle please" data-toggle="dropdown" href="#">请选择：</a>
+							<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+							<ul class="dropdown-menu middle"></ul>
+						</div>
+					</div>
+				</div>	
+					<button class="btn btn-warning span2" style="maring-left:100px">确认打印</button>
+					<button class="btn btn-warning  span2" data-dismiss="modal" >取消</button>					
+			</form>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="logo"><img src='./images/logo.png'/></div>
+		</div>
+	</div>
+</body>
+</html>

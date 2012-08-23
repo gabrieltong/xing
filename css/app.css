@@ -1,0 +1,37 @@
+body{background:url(../images/bg.png);font-size:16px;color:#333;line-height:22px;}
+.app{width:1024px; height:768px; background:url(../images/wrap.png); margin:auto;}
+.left{width:278px;height:636px; background:url(../images/left_bg.png) no-repeat; margin:50px 35px;}
+.right{ width:540px; height:536px; background:url(../images/right_bg.png) no-repeat; margin:50px 0px;padding:50px;}
+.logo{margin: 0 auto;text-align:center;margin-top:50px;cursor:pointer;}
+.well{background:transparent;border:none;}
+.choice {margin:50px 0 0 0;}
+.choice .control-label{width:75px;}
+.choice .controls{margin-left:90px;}
+.choice .control-label{font-size:14px;}
+.building .dropdown-menu{width:220px;left:-65px;text-align:center;}
+.building.buildings .dropdown-menu li{margin:10px;}
+.building.floors .dropdown-menu{min-width:220px;}
+.building.floors .dropdown-menu tr{}
+.building.floors.dropdown-menu td{padding:10px 3px;line-height:30px;}
+.building.floors.dropdown-menu td:hover{background:#08c;}
+.building.rooms .dropdown-menu li{margin:10px;}
+.buttons {text-align:center;}
+.buttons button{margin:10px;}
+.btn.btn-100{width:67%;}
+.btn.btn-50{width:30%;}
+.app h1{font-style:italic;color:#9d6939;}
+.right .span3{margin-left:0px;}
+.right .danjia{width:160px;}
+.right .nav-tabs a{color:#9d6939;}
+#tab1{text-align:center;}
+#tab3{text-align:center;padding:50px 0 0 0;}
+#tab2{text-align:center;padding:100px 0 0 0;}
+.btn.btn-way{width:90px;}
+.middle.dropdown-toggle{width:180px;}
+.middle.dropdown-menu{width:220px;}
+.middle.dropdown-menu li{margin:10px;}
+.left-right{ width:850px;height:536px; background:url(../images/right_bg.png); margin:50px 35px;padding:50px;}
+.g_span{float: left;margin-left: 20px;width:180px;}
+.pay_details .print_buttons{text-align:center;width:100%;margin:150px 0 0 0;}
+.warning_panel{width:300px;left:65%;top:65%!important;}
+.confirm_print{width:400px;padding:50px;}
