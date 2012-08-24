@@ -1,7 +1,8 @@
 //todo:add style to item selected(_building,_floor,_room) for left 
 //warning:for binding problem , we suppose the buildings data will not remove after page show , if data changes , refresh the page .
+
 $(function(){
-	window.data = {id:"xing",name:"xing",buildings:[],data:{}}
+	window.data = {id:"xing",name:"xing",buildings:[],data:{}};
 	_(10).times(function(i){
 		var _building = {index:i,name:"building_"+i,floors:[],data:{}}
 		_(20).times(function(j){
@@ -25,24 +26,24 @@ $(function(){
 			case 7:_time = "七";break;
 			case 8:_time = "八";break;			
 		}
-		return 	_time;
+		return	_time;
 	}
 	window.X = {
 		V:{},
 		M:{},
 		C:{}
-	}
+	};
 	X.M.Base = Backbone.Model.extend({
 		get_building:function(){
 			return this.get("buildings").find(function(_building){
-				return _building.get("selected")==true;
+				return _building.get("selected")===true;
 			})
 		},
 		get_floor:function(){
 			var _building = this.get_building();
 			if(_building){
 				return _building.get("floors").find(function(_item){
-					return _item.get("selected")==true;
+					return _item.get("selected")===true;
 				})
 			}
 			return null;
@@ -51,65 +52,65 @@ $(function(){
 			var _floor = this.get_floor();
 			if(_floor){
 				return _floor.get("rooms").find(function(_item){
-					return _item.get("selected")==true;
-				})
+					return _item.get("selected")===true;
+				});
 			}
 			return null;
 		},
 		get_compute:function(){
-			return this.get(this.get("compute_way"))
+			return this.get(this.get("compute_way"));
 		}
-	})
+	});
 	X.V.Base = Backbone.View.extend({
 		_initialize:function(){
 			this._render();
 			this._bind();
 		},
 		_init_options:function(){
-			console.log("super _init_options")
+			console.log("super _init_options");
 		},
 		_bind:function(){
-			console.log("super _bind")						
+			console.log("super _bind");					
 		},
 		_render:function(){
 			$(this.el).html(this.template(this.model?this.model.attributes:{}));
 		}
-	})
+	});
 	X.V.Details = X.V.Base.extend({
 		_render_room:function(){
 			var _room = this.model.get_room();
-			this.$el.find(".building_name").html(_room==null?'':_room.get_building_name());
-			this.$el.find(".room_name").html(_room==null?'':_room.get('name'));
-			this.$el.find(".room_type").html(_room==null?'':_room.get('type'));
-			this.$el.find(".room_area").html(_room==null?'':_room.get('area'));
+			this.$el.find(".building_name").html(_room===null?'':_room.get_building_name());
+			this.$el.find(".room_name").html(_room===null?'':_room.get('name'));
+			this.$el.find(".room_type").html(_room===null?'':_room.get('type'));
+			this.$el.find(".room_area").html(_room===null?'':_room.get('area'));
 		},
 		_bind:function(){
 			this.model.get("buildings").each(function(_building){
 				_building.get("floors").each(function(_floor){					
 					_floor.get("rooms").each(function(_room){
 						_room.bind("change:selected",this._render,this);											
-					},this)
-				},this)
-			},this)
+					},this);
+				},this);
+			},this);
 		}
-	})	
+	});
 	X.C.Base = Backbone.Collection.extend({
 
-	})
+	});
 	X.M.Times = X.M.Base.extend({
 		defaults:{
 			danjia:null,
-			qishu:3,
+			qishu:3
 		},
 		is_valid:function(){
 			var _r = {success:true,errors:[]};
 			if(_.isNull(this.get("app").get_room())){
 				_r.success = false;
-				_r.errors.push({key:"room",msg:"请选择房间"})
+				_r.errors.push({key:"room",msg:"请选择房间"});
 			}			
 			if(!_.isNumber(this.get("danjia")) || _.isNaN(this.get("danjia"))){
 				_r.success = false;
-				_r.errors.push({key:"danjia",msg:"请输入正确的单价"})
+				_r.errors.push({key:"danjia",msg:"请输入正确的单价"});
 			}
 			return _r;
 		},
@@ -125,13 +126,13 @@ $(function(){
 			var _info =  {total:_area*_danjia,qishu:[],danjia:_danjia};
 			_.times(_qishu,function(_item){
 				_info.qishu.push(parseInt(_total/_qishu));
-			},this)
+			},this);
 			return _info;
-		},		
-	})
+		}		
+	});
 	X.M.All = X.M.Base.extend({
 		defaults:{
-			danjia:10000,
+			danjia:10000
 		},
 		compute:function(){
 			var _room = this.get("app").get_room();
@@ -141,9 +142,9 @@ $(function(){
 			var _danjia = this.get("danjia");
 			var _area = _room.get("area");
 			var _total = _area*_danjia;
-			return {total:parseInt(_total),danjia:_danjia};
+			return {total:parseInt(_total),danjia:_danjia}
 		}
-	})
+	});
 	X.M.Credit = X.M.Base.extend({
 		defaults:{
 			base_lilv:0.07,
@@ -169,29 +170,29 @@ $(function(){
 				{name:0.85,value:0.85},
 				{name:1   ,value:1},
 				{name:1.1 ,value:1.1}	
-			],			
+			]		
 		},
 		is_valid:function(){
 			var _r = {success:true,errors:[]};
 			if(_.isNull(this.get("app").get_room())){
 				_r.success = false;
-				_r.errors.push({key:"room",msg:"请选择房间"})
+				_r.errors.push({key:"room",msg:"请选择房间"});
 			}
 			if(!_.isNumber(this.get("danjia")) || _.isNaN(this.get("danjia"))){
 				_r.success = false;
-				_r.errors.push({key:"danjia",msg:"请输入正确的单价"})
+				_r.errors.push({key:"danjia",msg:"请输入正确的单价"});
 			}
 			if(_.isNull(this.get("anjie"))){
 				_r.success = false;
-				_r.errors.push({key:"anjie",msg:"请选择按揭"})
+				_r.errors.push({key:"anjie",msg:"请选择按揭"});
 			}			
 			if(_.isNull(this.get("nianshu"))){
 				_r.success = false;
-				_r.errors.push({key:"nianshu",msg:"请选择年数"})
+				_r.errors.push({key:"nianshu",msg:"请选择年数"});
 			}			
 			if(_.isNull(this.get("lilv"))){
 				_r.success = false;
-				_r.errors.push({key:"lilv",msg:"请选择利率"})
+				_r.errors.push({key:"lilv",msg:"请选择利率"});
 			}			
 			return _r;
 		},		
@@ -211,7 +212,7 @@ $(function(){
 			var _info;
 			var _shoufu = _total*_anjie;
 			var _credit = _total*(1-_anjie);
-			if(_leixing=='money'){
+			if(_leixing==='money'){
 				_info =  this.compute_equal_money(_credit,_base_lilv*_lilv,_nianshu);
 			}else{
 				_info =  this.compute_equal_tax(_credit,_base_lilv*_lilv,_nianshu);
@@ -219,7 +220,7 @@ $(function(){
 			_info.total = _total;
 			_info.danjia = _danjia;
 			_info.shoufu = parseInt(_shoufu);
-			return _info
+			return _info;
 		},
 		compute_equal_money:function(money,rate,year){					
 			return this._equal_money(money,rate,year*12,year*12);
@@ -252,8 +253,8 @@ $(function(){
 				_obj.push({total:parseInt(_total),tax:parseInt(_tax),money:parseInt(_money)});	
 			}
 			return {months:_obj,tax:parseInt(_taxes)};
-		}		
-	})
+		}
+	});
 	
 	X.M.App = X.M.Base.extend({
 		defaults:{
@@ -265,14 +266,14 @@ $(function(){
 				{name:"张学友",value:2},
 				{name:"前学僧",value:3},
 				{name:"比尔盖斯",value:4}				
-			],
+			]
 		},		
 		initialize:function(){			
 			var _collection = new X.C.Building(this.get("buildings"));
 			_collection.each(function(_building){
-				_building.set('app',this)
-			},this)
-			this.set("buildings",_collection)
+				_building.set('app',this);
+			},this);
+			this.set("buildings",_collection);
 			var _times = new X.M.Times();
 			_times.set("app",this);
 			this.set("compute_times",_times);
@@ -283,91 +284,91 @@ $(function(){
 			_credit.set("app",this);
 			this.set("compute_credit",_credit);			
 		}
-	})
+	});
 	X.M.Building = X.M.Base.extend({
 		defaults:{
-			selected:false,
+			selected:false
 		},		
 		initialize:function(){
 			var _collection = new X.C.Floor(this.get("floors"));
 			_collection.each(function(_floor){
-				_floor.set('building',this)
-			},this)
+				_floor.set('building',this);
+			},this);
 			this.set("floors",_collection);
 			var that = this;
 			_.defer(function(){
 				that._bind();
-			})
+			});
 		},
 		_bind:function(){
 			this.get('app').get('buildings').each(function(_building){
-				if(_building!=this){
+				if(_building!==this){
 					_building.bind("change:selected",this.on_change_selected_building,this);					
 				}
-			},this)
+			},this);
 		},
 		on_change_selected_building:function(_building){
-			if(_building.get('selected')==true){
-				this.set("selected",false)
+			if(_building.get('selected')===true){
+				this.set("selected",false);
 			}
 		}
-	})	
+	});
 	X.M.Floor = X.M.Base.extend({
 		defaults:{
-			selected:false,
+			selected:false
 		},		
 		initialize:function(){
 			var _collection = new X.C.Room(this.get("rooms"));
 			_collection.each(function(_floor){
-				_floor.set('floor',this)
-			},this)
+				_floor.set('floor',this);
+			},this);
 			this.set("rooms",_collection)
 			var that = this;
 			_.defer(function(){
 				that._bind();
-			})
+			});
 		},
 		_bind:function(){
 			this.get('building').bind("change:selected",this.on_change_selected_building,this);
 			this.get('building').get("floors").each(function(_floor){
-				if(_floor!=this){
+				if(_floor!==this){
 					_floor.bind("change:selected",this.on_change_selected_floor,this);					
 				}
-			},this)
+			},this);
 		},
 		on_change_selected_building:function(){
-			if(this.get("building").get("selected")==false){
+			if(this.get("building").get("selected")===false){
 				this.set("selected",false);
 			}
 		},
 		on_change_selected_floor:function(_floor){
-			if(_floor.get('selected')==true){
-				this.set("selected",false)
+			if(_floor.get('selected')===true){
+				this.set("selected",false);
 			}
 		}
-	})
+	});
 	X.M.Room = X.M.Base.extend({
 		defaults:{
 			selected:false,
 			type:'一室一厅',
-			area:100,
+			area:100
 		},		
 		initialize:function(){
 			var that = this;
 			_.defer(function(){
 				that._bind();
-			})
+			});
 		},
 		_bind:function(){
 			this.get('floor').bind("change:selected",this.on_change_selected_floor,this);			
 			this.get("floor").get("rooms").each(function(_room){
-				if(_room!=this){
+				if(_room!==this){
 					_room.bind("change:selected",this.on_change_selected_room,this);
 				}
-			},this)
+			},this);
 		},
 		on_change_selected_floor:function(){
-			if(this.get("floor").get("selected")==false){
+			if(this.get("floor").get("selected")===false){
 				this.set("selected",false);
 			}
 		},

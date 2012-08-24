@@ -1,9 +1,8 @@
 body{background:url(../images/bg.png);font-size:16px;color:#333;line-height:22px;}
 .app{width:1024px; height:768px; background:url(../images/wrap.png); margin:auto;}
-.left{width:278px;height:636px; background:url(../images/left_bg.png) no-repeat; margin:50px 35px;}
-.right{ width:540px; height:536px; background:url(../images/right_bg.png) no-repeat; margin:50px 0px;padding:50px;}
+.left{width:278px;height:636px; background:url(../images/left_bg.png) no-repeat; margin:50px 35px 0 35px;}
+.right{ width:540px; height:536px; background:url(../images/right_bg.png) no-repeat; margin:50px 0px 0px 0px;padding:50px;}
 .logo{margin: 0 auto;text-align:center;margin-top:50px;cursor:pointer;}
-.well{background:transparent;border:none;}
 .choice {margin:50px 0 0 0;}
 .choice .control-label{width:75px;}
 .choice .controls{margin-left:90px;}
@@ -19,7 +18,7 @@ body{background:url(../images/bg.png);font-size:16px;color:#333;line-height:22px
 .buttons button{margin:10px;}
 .btn.btn-100{width:67%;}
 .btn.btn-50{width:30%;}
-.app h1{font-style:italic;color:#9d6939;}
+.app h1,.print_panel h2{font-style:italic;color:#9d6939;}
 .right .span3{margin-left:0px;}
 .right .danjia{width:160px;}
 .right .nav-tabs a{color:#9d6939;}
@@ -27,11 +26,16 @@ body{background:url(../images/bg.png);font-size:16px;color:#333;line-height:22px
 #tab3{text-align:center;padding:50px 0 0 0;}
 #tab2{text-align:center;padding:100px 0 0 0;}
 .btn.btn-way{width:90px;}
+
 .middle.dropdown-toggle{width:180px;}
 .middle.dropdown-menu{width:220px;}
 .middle.dropdown-menu li{margin:10px;}
-.left-right{ width:850px;height:536px; background:url(../images/right_bg.png); margin:50px 35px;padding:50px;}
+.left-right{ width:850px;height:536px; background:url(../images/right_bg.png); margin:50px 35px 0px 35px;padding:50px;}
 .g_span{float: left;margin-left: 20px;width:180px;}
 .pay_details .print_buttons{text-align:center;width:100%;margin:150px 0 0 0;}
 .warning_panel{width:300px;left:65%;top:65%!important;}
 .confirm_print{width:400px;padding:50px;}
+.footer{text-align:center;padding:15px;color:#9d6939;}
+.print_panel .well{padding:40px;}
+.print_panel .title{font-size:25px;color:#9d6939;font-style:italic;}
+.print_panel .item{margin-bottom:30px;line-height:40px;}
