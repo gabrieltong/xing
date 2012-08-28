@@ -898,7 +898,7 @@ $(function(){
 			"click .print":"print"
 		},
 		print:function(){
-			window.location.href="./print.html#room"+this.model.get_room().get("index");
+			window.open("./print.html#room"+this.model.get_room().get("index"),"_blank");
 			return false;
 		},
 		confirm:function(errors){
@@ -933,10 +933,10 @@ $(function(){
 		fetch_users:function(){
 			var data = {
 				users:[
-					{name:"刘德华",value:1},
-					{name:"张学友",value:2},
-					{name:"前学僧",value:3},
-					{name:"比尔盖斯",value:4}				
+					{name:"刘德华",value:1 ,phone:13599993333},
+					{name:"张学友",value:2 ,phone:13599993334},
+					{name:"前学僧",value:3 ,phone:13599993332},
+					{name:"比尔盖斯",value:4,phone:13599993331}				
 				]
 			}
 			localStorage.setItem(this.users_key,JSON.stringify(data))
@@ -976,7 +976,8 @@ $(function(){
 			var admin = this.model.get("admin");
 			var room = this.room;
 			this.$el.find(".username").html(admin.get("username"));
-			this.$el.find(".date").html(new Date());
+			moment.lang('zh-cn');
+			this.$el.find(".date").html(moment().format('YYYY年MM月DD日'));
 			this.$el.find(".building").html(room.get("floor").get("building").get("name"));
 			this.$el.find(".room").html(room.get("name"));			
 			this.$el.find(".area").html(room.get("area")+"m<sup>2</sup>");
@@ -1009,6 +1010,8 @@ $(function(){
 				this.$el.find(".credit .money_month").html("￥"+_info.months[0].total);
 				this.$el.find(".credit .lilv").html(zh_for_lilv(_info.lilv));				
 			}
+				this.$el.find(".guwen_name").html( admin.get("guwen").name);
+				this.$el.find(".guwen_phone").html(admin.get("guwen").phone);
 		}
 	})	
 	X.V.App = X.V.Base.extend({
