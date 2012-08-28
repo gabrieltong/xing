@@ -13,6 +13,9 @@ $(function(){
 		})
 		data.buildings.push(_building)		
 	})
+	function format_money(val){
+		var val = val.toString();
+	}
 	function zh_for_int(val){
 		var _time = '';
 		switch(val){
