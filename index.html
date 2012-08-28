@@ -7,10 +7,16 @@
 	<script src="javascript/underscore-min.js"></script>				
 	<script src="javascript/backbone-min.js"></script>			
 	<script src="bootstrap/js/bootstrap.js"></script>
+	<script src="javascript/moment.min.js"></script>	
 	<script src="javascript/app.js"></script>	
 	<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
 	<link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
 	<link href="css/app.css" rel="stylesheet">
+	<script>
+		$(function(){
+			window.app = new X.V.App()
+		})
+	</script>
 </head>
 
 <body>
@@ -292,7 +298,7 @@
 					<label class="control-label" for="appendedInput">客户姓名：</label>
 					<div class="controls">
 						<div class="input-append">
-							<input class="middle danjia" type="text"/>
+							<input class="middle client-name" type="text"/>
 						</div>
 					</div>
 				</div>
@@ -306,7 +312,7 @@
 						</div>
 					</div>
 				</div>	
-					<button class="btn btn-warning span2" style="maring-left:100px">确认打印</button>
+					<button class="btn btn-warning span2 print" style="maring-left:100px">确认打印</button>
 					<button class="btn btn-warning  span2" data-dismiss="modal" >取消</button>					
 			</form>
 		</div>

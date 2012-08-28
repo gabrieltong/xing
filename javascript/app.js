@@ -1,18 +1,43 @@
 //todo:add style to item selected(_building,_floor,_room) for left 
 //warning:for binding problem , we suppose the buildings data will not remove after page show , if data changes , refresh the page .
 $(function(){
-	window.data = {id:"xing",name:"xing",buildings:[],data:{}}
-	_(10).times(function(i){
-		var _building = {index:i,name:"building_"+i,floors:[],data:{}}
-		_(20).times(function(j){
-			var _floor = {index:j,name:j,rooms:[],data:{}}
-			_(8).times(function(k){
-				_floor.rooms.push({index:k,name:"room_"+k,data:{},area:parseInt(Math.random()*1000).toString(),type:"四室两厅"})
-			})
-			_building.floors.push(_floor)
-		})
-		data.buildings.push(_building)		
-	})
+	function zh_for_credit(val){
+		var _val = '';
+		switch(val){
+			case 'money':_val  = "等额本金";break;			
+			case 'tax':_val    = "等额本息";break;
+		}
+		return 	_val;
+	}
+	function zh_for_lilv(val){
+		var _val = '';
+		switch(val){
+			case 0.7: _val = 0.7;break;			
+			case 0.85:_val = 0.85;break;
+			case 1:   _val = 1;break;
+			case 1.1: _val = 1.1;break;
+		}
+		return 	_val;
+	}
+	function zh_for_anjie(val){
+		var _val = '';
+		switch(val){
+			case 0.2:_val = "二成";break;			
+			case 0.3:_val = "三成";break;
+			case 0.6:_val = "六成";break;
+			case 0.8:_val = "八成";break;
+		}
+		return 	_val;
+	}
+	function zh_for_way(val){
+		var _val = '';
+		switch(val){
+			case 'times':_val  = "分期付款";break;			
+			case 'all':_val    = "一次性付清";break;
+			case 'credit':_val = "商业贷款";break;			
+		}
+		return 	_val;
+	}
 	function zh_for_int(val){
 		var _time = '';
 		switch(val){
@@ -56,6 +81,25 @@ $(function(){
 			}
 			return null;
 		},
+		get_room_by_id:function(id){
+			var room;
+			this.get('buildings').each(function(_building){
+				_building.get("floors").each(function(_floor){
+					_floor.get("rooms").each(function(_room){
+						if(_room.get('index')==id){
+							room =_room;
+						}
+					},this)
+				},this)
+			},this)
+			return room;
+		},
+		get_user_by_id:function(value){
+			var _item =  _(this.get("guwen_choices")).find(function(item){
+				return item.value == value;
+			},this)
+			return _item;
+		},
 		get_compute:function(){
 			return this.get(this.get("compute_way"))
 		}
@@ -66,10 +110,10 @@ $(function(){
 			this._bind();
 		},
 		_init_options:function(){
-			console.log("super _init_options")
+
 		},
 		_bind:function(){
-			console.log("super _bind")						
+
 		},
 		_render:function(){
 			$(this.el).html(this.template(this.model?this.model.attributes:{}));
@@ -122,16 +166,33 @@ $(function(){
 			var _qishu = this.get("qishu");
 			var _area = _room.get("area");
 			var _total = _area*_danjia;
-			var _info =  {total:_area*_danjia,qishu:[],danjia:_danjia};
-			_.times(_qishu,function(_item){
-				_info.qishu.push(parseInt(_total/_qishu));
-			},this)
+			var _info =  {total:_area*_danjia,qishu:[],danjia:_danjia,type:'times'};
+			if(_qishu == 3){
+				_info.qishu.push(parseInt(_total*0.4));
+				_info.qishu.push(parseInt(_total*0.3));					
+				_info.qishu.push(parseInt(_total*0.3));
+			}else if(_qishu == 3){
+				_info.qishu.push(parseInt(_total*0.5));					
+				_info.qishu.push(parseInt(_total*0.5));
+			}else{
+				_.times(_qishu,function(_item){
+					_info.qishu.push(parseInt(_total/_qishu));
+				},this)				
+			}
 			return _info;
 		},		
 	})
 	X.M.All = X.M.Base.extend({
 		defaults:{
-			danjia:10000,
+			danjia:null,
+		},
+		is_valid:function(){
+			var _r = {success:true,errors:[]};
+			if(!_.isNumber(this.get("danjia")) || _.isNaN(this.get("danjia"))){
+				_r.success = false;
+				_r.errors.push({key:"danjia",msg:"请输入正确的单价"})
+			}
+			return _r;
 		},
 		compute:function(){
 			var _room = this.get("app").get_room();
@@ -141,7 +202,7 @@ $(function(){
 			var _danjia = this.get("danjia");
 			var _area = _room.get("area");
 			var _total = _area*_danjia;
-			return {total:parseInt(_total),danjia:_danjia};
+			return {total:parseInt(_total),danjia:_danjia,type:'all'};
 		}
 	})
 	X.M.Credit = X.M.Base.extend({
@@ -216,6 +277,10 @@ $(function(){
 			}else{
 				_info =  this.compute_equal_tax(_credit,_base_lilv*_lilv,_nianshu);
 			}
+			_info.leixing = _leixing;
+			_info.anjie = _anjie;
+			_info.lilv = _lilv;
+			_info.type = "credit";
 			_info.total = _total;
 			_info.danjia = _danjia;
 			_info.shoufu = parseInt(_shoufu);
@@ -260,14 +325,16 @@ $(function(){
 			selected:true,
 			compute_way:'compute_times',
 			guwen:null,
-			guwen_choices:[
-				{name:"刘德华",value:1},
-				{name:"张学友",value:2},
-				{name:"前学僧",value:3},
-				{name:"比尔盖斯",value:4}				
-			],
+			guwen_choices:[],
 		},		
-		initialize:function(){			
+		initialize:function(){
+			var _admin = new X.M.Admin({app:this});
+			this.set("admin",_admin);
+			this.set("guwen_choices",this.get("admin").get('users').users);
+			this.set("buildings",this.get("admin").get("buildings").buildings);
+			this.set("index",this.get("admin").get("buildings").index);
+			this.set("username",this.get("admin").get("buildings").name);
+			this.set("data",this.get("admin").get("buildings").data);			
 			var _collection = new X.C.Building(this.get("buildings"));
 			_collection.each(function(_building){
 				_building.set('app',this)
@@ -606,7 +673,6 @@ $(function(){
 		},
 		_render:function(){
 			this.$el.find('ul').empty();
-			console.log(this.model.get(this.options.choices))
 			_.each(this.model.get(this.options.choices),function(_item){
 				var _model = new X.M.DDLi(_item);
 				var _li = new X.V.DDLi({model:_model,target:this.model,key:this.options.key})
@@ -674,6 +740,7 @@ $(function(){
 			}else{
 				this.options.warning.warn(is_valid.errors);
 			}
+			return false;
 		},		
 		_on_tab_compute_times:function(){
 			this.model.set("compute_way","compute_times");
@@ -729,11 +796,10 @@ $(function(){
 			}else{
 				return;
 			}
-			
-			console.log(_base);
 			if(!_base){
 				return;
 			}
+			this.model.get("admin").save_compute(_base)
 			switch(this.model.get("compute_way")){
 				case 'compute_times':_way  = "分期付款";break;
 				case 'compute_all':_way    = "一次性付清";break;
@@ -745,7 +811,6 @@ $(function(){
 		},
 		_render_compute_pay:function(){
 			this.$el.find(".pay_h1,.credit,.times").hide();
-			console.log(this.model.get("compute_way"));
 			if(this.model.get("compute_way")=='compute_times'){
 				this._render_compute_times();
 			}else if(this.model.get("compute_way")=='compute_credit'){
@@ -753,13 +818,11 @@ $(function(){
 			}
 		},
 		_render_compute_times:function(){
-			console.log("in console")
 			this.$el.find(".times_list").empty();
 			this.$el.find(".times,.pay_h1").show();			
 			var _time = zh_for_int(this.model.get("compute_times").get("qishu"));
 			this.$el.find(".times_value").html(_time+"期");
 			var _info = this.model.get("compute_times").compute();
-			console.log(_info)
 			if(_info){
 				_.each(_info.qishu,function(_item,i){
 					this.$el.find(".times_list").append("<div class='g_span'> \
@@ -799,7 +862,8 @@ $(function(){
 		routes: {
 			"views": "views" ,
 			"compute": "compute" ,
-			"details": "details" 						
+			"details": "details",
+			"room:id": "room"
 		}
 	});
 	X.V.Warning = X.V.Base.extend({
@@ -807,7 +871,6 @@ $(function(){
 		warn:function(errors){
 			this.$el.find(".body").empty();
 			_.each(errors,function(_error){
-				console.log(errors)
 				this.$el.find(".body").append("<p>"+_error.msg+"</p>")
 			},this)
 			this.$el.modal("show")
@@ -816,14 +879,136 @@ $(function(){
 	X.V.ConfirmPrint = X.V.Base.extend({
 		initialize:function(){
 			this.guwen = new X.V.DDUl({model:this.model,key:'guwen',choices:'guwen_choices',el:this.$el.find(".guwen")})
+			this._bind();
+		},
+		_bind:function(){
+			var that = this;
+			this.$el.find(".client-name").keyup(function(){
+				that.model.get("admin").save_client($(this).val());
+			})
+			this.model.bind("change:guwen",function(){
+				this.model.get("admin").save_guwen(this.model.get('guwen'));
+			},this)
+		},
+		events:{
+			"click .print":"print"
+		},
+		print:function(){
+			window.location.href="./print.html#room"+this.model.get_room().get("index");
+			return false;
 		},
 		confirm:function(errors){
 			this.$el.modal("show")
+		}
+	})
+	X.M.Admin = X.M.Base.extend({
+		buildings_key:"xinghaiwanyihao-buildings",
+		users_key:"xinghaiwanyihao-users",
+		client_key:"xinghaiwanyihao-client",		
+		compute_key:'xinghaiwanyihao-compute',
+		room_key:'xinghaiwanyihao-room',
+		guwen_key:'xinghaiwanyihao-guwen',		
+		initialize:function(){
+			this.set("buildings",JSON.parse(localStorage.getItem(this.buildings_key)))
+			this.set("users",JSON.parse(localStorage.getItem(this.users_key)))			
+			this.set("compute",JSON.parse(localStorage.getItem(this.compute_key)))
+			this.set("username",localStorage.getItem(this.client_key))
+			this.set("guwen",JSON.parse(localStorage.getItem(this.guwen_key)));
+		},
+		save_compute:function(data){
+			localStorage.setItem(this.compute_key,JSON.stringify(data))
+		},
+		save_client:function(data){
+			localStorage.setItem(this.client_key,data)			
+		},
+		save_guwen:function(id){
+			localStorage.setItem(this.guwen_key,JSON.stringify(this.get("app").get_user_by_id(id)));		
+		},		
+		fetch_users:function(){
+			var data = {
+				users:[
+					{name:"刘德华",value:1},
+					{name:"张学友",value:2},
+					{name:"前学僧",value:3},
+					{name:"比尔盖斯",value:4}				
+				]
+			}
+			localStorage.setItem(this.users_key,JSON.stringify(data))
+		},
+		fetch_buildings:function(){
+			var data = {index:"xing",name:"xing",buildings:[],data:{}}
+			_(2).times(function(i){
+				var _building = {index:i,name:"building_"+i,floors:[],data:{}}
+				_(3).times(function(j){
+					var _floor = {index:j,name:j,rooms:[],data:{}}
+					_(4).times(function(k){
+						_floor.rooms.push({index:parseInt(i+"0"+j+"0"+k),name:"room_"+k,data:{},area:parseInt(Math.random()*1000).toString(),type:"四室两厅"})
+					})
+					_building.floors.push(_floor)
+				})
+				data.buildings.push(_building)		
+			})
+			localStorage.setItem(this.buildings_key,JSON.stringify(data))
+		}
+	})	
+	X.V.Print = X.V.Base.extend({
+		initialize:function(){
+			this.model = new X.M.App;
+			this.options.route = new X.R;	
+			this._bind();		
+			_.defer(function(){
+				Backbone.history.start();
+			})
+		},
+		_bind:function(){
+			this.options.route.bind("route:room",function(id){
+				this.room = this.model.get_room_by_id(id);
+				this._render();
+			},this)
+		},
+		_render:function(){
+			var admin = this.model.get("admin");
+			var room = this.room;
+			this.$el.find(".username").html(admin.get("username"));
+			this.$el.find(".date").html(new Date());
+			this.$el.find(".building").html(room.get("floor").get("building").get("name"));
+			this.$el.find(".room").html(room.get("name"));			
+			this.$el.find(".area").html(room.get("area")+"m<sup>2</sup>");
+			this.$el.find(".type").html(room.get("type"));
+			this.$el.find(".compute_way").html(zh_for_way(admin.get("compute").type))
+			this.$el.find(".danjia").html(admin.get("compute").danjia+"元/m<sup>2</sup>")			
+			this.$el.find(".fangjia").html(admin.get("compute").total+"元")
+			var _info = admin.get("compute");
+			this.$el.find('.item.credit,.item.all,.item.fenqi').hide();
+			if(_info.type == 'times'){
+				this.$el.find('.item.fenqi').show();
+				var _time = zh_for_int(admin.get("compute").qishu.length);							
+				this.$el.find(".times_value").html(_time+"期");
+				if(_info){
+					_.each(_info.qishu,function(_item,i){
+						this.$el.find(".times_list").append("<div class='g_span'> \
+						<span>"+zh_for_int((i+1))+"期：</span>                                    \
+						<span>￥"+_item+"</span>                         \
+						</div>");
+					},this)				
+				}
+			}else if(_info.type == 'all'){
+				this.$el.find('.item.all').show();				
+			}else{
+				this.$el.find('.item.credit').show();				
+				this.$el.find(".credit .leixing").html(zh_for_credit(_info.leixing));
+				this.$el.find(".credit .nianshu").html(_info.months.length/12+"年");
+				this.$el.find(".credit .anjie").html(zh_for_anjie(_info.anjie));
+				this.$el.find(".credit .shoufu").html("￥"+_info.shoufu);
+				this.$el.find(".credit .money_month").html("￥"+_info.months[0].total);
+				this.$el.find(".credit .lilv").html(zh_for_lilv(_info.lilv));				
+			}
 		}
 	})	
 	X.V.App = X.V.Base.extend({
 		initialize:function(){
 			var that = this;
+			this.model = new X.M.App;
 			this.route = new X.R;
 			this.warning = new X.V.Warning({el:$(".warning_panel")});
 			this.confirm = new X.V.ConfirmPrint({model:this.model,el:$(".confirm_print")});			
@@ -837,5 +1022,4 @@ $(function(){
 			})
 		}
 	})
-	window.app = new X.V.App({model:new X.M.App(data)})
 })

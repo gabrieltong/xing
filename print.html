@@ -4,12 +4,21 @@
 	<meta charset="utf-8">
 	<title>Twitter Bootstrap</title>
 	<script src="javascript/jquery.js"></script>
+	<script src="javascript/underscore-min.js"></script>				
+	<script src="javascript/backbone-min.js"></script>			
+	<script src="bootstrap/js/bootstrap.js"></script>
+	<script src="javascript/app.js"></script>
 	<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
 	<link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
 	<link href="css/app.css" rel="stylesheet">
+	<script>
+		$(function(){
+			window.print = new X.V.Print({el:$("div.print")})
+		})
+	</script>
 </head>
 <body style="background:url(images/bg2.png)">
-	<div class="container print_panel">
+	<div class="container print_panel print" >
 		<div class="row">
 			<div class="logo"><img src='./images/logo.png'/></div>
 		</div>
@@ -18,32 +27,30 @@
 			<div class="row item" style="border-bottom:1px solid #CCC">
 				<div class="span4">
 					<span class="title">客户名称：</span>
-					<span class="title">张先生</span>
+					<span class="title username"></span>
 				</div>
 				<div class="span3 offset4">
 					<span>时间：</span>
-					<span>2012年8月2日</span>
+					<span class='date'></span>
 				</div>			
 			</div>
 			<div class="row item">
 				<h2>基本信息</h2>
 				<div class="span4">
-					<span></span>
-					<span></span>
-					楼号：25-1号
+					<span>楼号</span>
+					<span class="building"></span>
 				</div>
 				<div class="span7">
 					<span>房间：</span>
-					<span>0802室</span>
-
+					<span class='room'></span>
 				</div>
 				<div class="span4">
 					<span>面积：</span>
-					<span>360m<sup>2</sup></span>	
+					<span class='area'></span>	
 				</div>
 				<div class="span7">
 					<span>户型：</span>
-					<span>二室两厅</span>
+					<span class='type'></span>
 
 				</div>
 			</div>		
@@ -51,34 +58,58 @@
 				<h2>付款信息</h2>
 				<div class="span4">
 					<span>付款方式：</span>
-					<span>分期付款</span>
+					<span class="compute_way"></span>
 				</div>
 				<div class="span7">
 					<span>单价：</span>
-					<span>10000m<sup>2</sup></span>
+					<span class='danjia'></span>
 
 					<div class="span4">
 						<span>房款总价	：</span>
-						<span>100000</span>
+						<span class='fangjia'></span>
 					</div>
 				</div>
 			</div>
-			<div class="row item">
+			<div class="row item fenqi">
 				<h2>付款详情</h2>
-				<div class="span4">
+				<div class="span10">
 					<span>分期期数：</span>
-					<span>二期</span>
+					<span class="times_value"></span>
 				</div>
-				<div class="span7">
-					<span>单价：</span>
-					<span>10000m<sup>2</sup></span>
-
-					<div class="span4">
-						<span>房款总价	：</span>
-						<span>100000</span>
-					</div>
-				</div>
+				<div class="row times_list">
+					
+				</div>						
 			</div>
+			<div class="row item all">
+							
+			</div>
+			<div class="row item credit">
+				<h2>付款详情</h2>
+				<div class="span3">
+					<span>贷款类型：</span>
+					<span class="leixing"></span>
+				</div>
+				<div class="span3">
+					<span>贷款年数：</span>
+					<span class="nianshu"></span>
+				</div>
+				<div class="span3">
+					<span>按揭：</span>
+					<span class="anjie"></span>
+				</div>
+				<div class="span3">
+					<span>首期付款：</span>
+					<span class="shoufu"></span>
+				</div>
+				<div class="span3">
+					<span>月还款额：</span>
+					<span class="money_month"></span>
+				</div>	
+				<div class="span3">
+					<span>利率</span>
+					<span class="lilv"></span>
+				</div>								
+			</div>			
 			<div class="clear"></div>
 		</div>			
 	</div>
