@@ -9,6 +9,20 @@ $(function(){
 		}
 		return 	_val;
 	}
+	function format_money(val){
+		var val = val.toString();
+		var s = "";
+		var j =0;
+		for(var i=val.length-1;i--;i>=0){
+			s=val[i]+s; 	
+			if(j%3==2&&i!=0){
+				console.log("in")
+				s=","+s;
+			}
+			j++;
+		}
+		return "￥"+s+'元';
+	}	
 	function zh_for_lilv(val){
 		var _val = '';
 		switch(val){
@@ -810,8 +824,8 @@ $(function(){
 				case 'compute_credit':_way = "商业贷款";break;				
 			}
 			this.$el.find(".compute_way").html(_way);
-			this.$el.find(".danjia").html("￥"+_base.danjia+'m<sup>2</sup>');
-			this.$el.find(".total").html("￥"+_base.total);			
+			this.$el.find(".danjia").html(format_money(_base.danjia)+'/m<sup>2</sup>');
+			this.$el.find(".total").html(format_money(_base.total));			
 		},
 		_render_compute_pay:function(){
 			this.$el.find(".pay_h1,.credit,.times").hide();
@@ -831,7 +845,7 @@ $(function(){
 				_.each(_info.qishu,function(_item,i){
 					this.$el.find(".times_list").append("<div class='g_span'> \
 						<span>"+zh_for_int((i+1))+"期：</span>                                    \
-						<span>￥"+_item+"</span>                         \
+						<span>"+format_money(_item)+"</span>                         \
 					</div>");
 				},this)				
 			}
@@ -842,8 +856,8 @@ $(function(){
 			this.$el.find(".credit .leixing").html(this.model.get("compute_credit").get('leixing'));
 			this.$el.find(".credit .nianshu").html(this.model.get("compute_credit").get('nianshu'));
 			this.$el.find(".credit .anjie").html(this.model.get("compute_credit").get('anjie'));
-			this.$el.find(".credit .shoufu").html("￥"+_info.shoufu);
-			this.$el.find(".credit .money_month").html("￥"+_info.months[0].total);
+			this.$el.find(".credit .shoufu").html(format_money(_info.shoufu));
+			this.$el.find(".credit .money_month").html(format_money(_info.months[0].total));
 		},		
 	})
 	X.V.Views = X.V.Base.extend({
@@ -942,6 +956,29 @@ $(function(){
 			localStorage.setItem(this.users_key,JSON.stringify(data))
 		},
 		fetch_buildings:function(){
+		// 		var data = {
+		// 			index:"xing",
+		// 			name:"xing",
+		// 			buildings:[
+		// 				{
+		// 					index:"building_id",
+		// 					name:"building_name"
+		// 					floors:[
+		// 						index:"floor_id",
+		// 						name: "floor_name",
+		// 						room:[
+		// 							{
+		// 								index:"room_id",
+		// 								name:" room_name",
+		// 								area:'',
+		// 								type:''
+		// 							}
+		// 						]
+		// 					]
+		// 				}
+		// 			],
+		// 			data:{}
+		// 		}
 			var data = {index:"xing",name:"xing",buildings:[],data:{}}
 			_(2).times(function(i){
 				var _building = {index:i,name:"building_"+i,floors:[],data:{}}
@@ -983,8 +1020,8 @@ $(function(){
 			this.$el.find(".area").html(room.get("area")+"m<sup>2</sup>");
 			this.$el.find(".type").html(room.get("type"));
 			this.$el.find(".compute_way").html(zh_for_way(admin.get("compute").type))
-			this.$el.find(".danjia").html(admin.get("compute").danjia+"元/m<sup>2</sup>")			
-			this.$el.find(".fangjia").html(admin.get("compute").total+"元")
+			this.$el.find(".danjia").html(format_money(admin.get("compute").danjia)+"/m<sup>2</sup>")			
+			this.$el.find(".fangjia").html(format_money(admin.get("compute").total))
 			var _info = admin.get("compute");
 			this.$el.find('.item.credit,.item.all,.item.fenqi').hide();
 			if(_info.type == 'times'){
@@ -995,7 +1032,7 @@ $(function(){
 					_.each(_info.qishu,function(_item,i){
 						this.$el.find(".times_list").append("<div class='g_span'> \
 						<span>"+zh_for_int((i+1))+"期：</span>                                    \
-						<span>￥"+_item+"</span>                         \
+						<span>"+format_money(_item)+"</span>                         \
 						</div>");
 					},this)				
 				}
@@ -1006,8 +1043,8 @@ $(function(){
 				this.$el.find(".credit .leixing").html(zh_for_credit(_info.leixing));
 				this.$el.find(".credit .nianshu").html(_info.months.length/12+"年");
 				this.$el.find(".credit .anjie").html(zh_for_anjie(_info.anjie));
-				this.$el.find(".credit .shoufu").html("￥"+_info.shoufu);
-				this.$el.find(".credit .money_month").html("￥"+_info.months[0].total);
+				this.$el.find(".credit .shoufu").html(format_money(_info.shoufu));
+				this.$el.find(".credit .money_month").html(format_money(_info.months[0].total));
 				this.$el.find(".credit .lilv").html(zh_for_lilv(_info.lilv));				
 			}
 				this.$el.find(".guwen_name").html( admin.get("guwen").name);
