@@ -956,41 +956,61 @@ $(function(){
 			localStorage.setItem(this.users_key,JSON.stringify(data))
 		},
 		fetch_buildings:function(){
-		// 		var data = {
-		// 			index:"xing",
-		// 			name:"xing",
-		// 			buildings:[
-		// 				{
-		// 					index:"building_id",
-		// 					name:"building_name"
-		// 					floors:[
-		// 						index:"floor_id",
-		// 						name: "floor_name",
-		// 						room:[
-		// 							{
-		// 								index:"room_id",
-		// 								name:" room_name",
-		// 								area:'',
-		// 								type:''
-		// 							}
-		// 						]
-		// 					]
-		// 				}
-		// 			],
-		// 			data:{}
-		// 		}
-			var data = {index:"xing",name:"xing",buildings:[],data:{}}
-			_(2).times(function(i){
-				var _building = {index:i,name:"building_"+i,floors:[],data:{}}
-				_(3).times(function(j){
-					var _floor = {index:j,name:j,rooms:[],data:{}}
-					_(4).times(function(k){
-						_floor.rooms.push({index:parseInt(i+"0"+j+"0"+k),name:"room_"+k,data:{},area:parseInt(Math.random()*1000).toString(),type:"四室两厅"})
-					})
-					_building.floors.push(_floor)
-				})
-				data.buildings.push(_building)		
-			})
+			var data = {
+				index:"xing",
+				name:"xing",
+				buildings:[
+					{	
+						index:1,
+						name:'25-1',
+						floors:[
+							{
+								index:2,
+								name:'1',
+								rooms:[
+									{
+										index:3,
+										name:"一号",
+										type:"四室三厅",
+										area:300
+									},
+									{
+										index:4,
+										name:"二号",
+										type:"四室两厅",
+										area:400										
+									}									
+								]
+							}
+						]
+					},
+					{	
+						index:5,
+						name:'25-2',
+						floors:[
+							{
+								index:6,
+								name:'1',
+								rooms:[
+									{
+										index:37,
+										name:"一号",
+										type:"四室三厅",
+										area:300
+									},
+									{
+										index:8,
+										name:"二号",
+										type:"四室两厅",
+										area:400										
+									}									
+								]
+							}
+						]
+					}					
+				]
+			}
+			window.data = data;
 			localStorage.setItem(this.buildings_key,JSON.stringify(data))
 		}
 	})	
