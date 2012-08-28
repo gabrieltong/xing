@@ -330,11 +330,15 @@ $(function(){
 		initialize:function(){
 			var _admin = new X.M.Admin({app:this});
 			this.set("admin",_admin);
-			this.set("guwen_choices",this.get("admin").get('users').users);
-			this.set("buildings",this.get("admin").get("buildings").buildings);
-			this.set("index",this.get("admin").get("buildings").index);
-			this.set("username",this.get("admin").get("buildings").name);
-			this.set("data",this.get("admin").get("buildings").data);			
+			try{
+				this.set("guwen_choices",this.get("admin").get('users').users);
+				this.set("buildings",this.get("admin").get("buildings").buildings);				
+				this.set("index",this.get("admin").get("buildings").index);
+				this.set("username",this.get("admin").get("buildings").name);
+				this.set("data",this.get("admin").get("buildings").data);				
+			}catch(e){
+				alert("There's no data in localStorage")
+			}
 			var _collection = new X.C.Building(this.get("buildings"));
 			_collection.each(function(_building){
 				_building.set('app',this)
@@ -909,6 +913,8 @@ $(function(){
 		room_key:'xinghaiwanyihao-room',
 		guwen_key:'xinghaiwanyihao-guwen',		
 		initialize:function(){
+			this.fetch_users();
+			this.fetch_buildings();			
 			this.set("buildings",JSON.parse(localStorage.getItem(this.buildings_key)))
 			this.set("users",JSON.parse(localStorage.getItem(this.users_key)))			
 			this.set("compute",JSON.parse(localStorage.getItem(this.compute_key)))
